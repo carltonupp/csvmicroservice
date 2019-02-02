@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvMicroservice.Api", "CsvMicroservice.Api\CsvMicroservice.Api.csproj", "{450A12FA-1777-484D-BCE1-20B9B5B5385C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvMicroservice.Core", "CsvMicroservice.Core\CsvMicroservice.Core.csproj", "{86769CD2-ACD7-4B68-A649-DFC5E406292E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{450A12FA-1777-484D-BCE1-20B9B5B5385C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{450A12FA-1777-484D-BCE1-20B9B5B5385C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{450A12FA-1777-484D-BCE1-20B9B5B5385C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86769CD2-ACD7-4B68-A649-DFC5E406292E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86769CD2-ACD7-4B68-A649-DFC5E406292E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86769CD2-ACD7-4B68-A649-DFC5E406292E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86769CD2-ACD7-4B68-A649-DFC5E406292E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
