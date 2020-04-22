@@ -8,31 +8,40 @@ namespace Service.Utilities
 {
     internal static class CsvUtility
     {
-        public static byte[] Create(IEnumerable<JObject> data, bool includeHeaders)
+        public static byte[] Create(IEnumerable<JObject> records, bool includeHeaders)
         {
-            var csv = new StringBuilder()
-                .WriteHeaders(data.First().Properties(), includeHeaders)
-                .WriteRecords(data)
-                .WriteToCsvFile();
-            return csv;
-        }
+            var sb = new StringBuilder();
 
-        private static StringBuilder WriteHeaders(this StringBuilder builder, IEnumerable<JProperty> headers, bool includeHeaders)
-        {
             if (includeHeaders)
             {
-                var rowBuilder = new StringBuilder();
-                foreach (var header in headers)
-                {
-                    rowBuilder.Append($"{header.Name}, ");
-                }
-                var headerRow = rowBuilder.ToString()
-                    .RemoveTrailingComma();
-                builder.AppendLine(headerRow);
+                var headerRow = WriteHeaders(records.GetProperties());
+                sb.AppendLine(headerRow);
             }
 
-            return builder;
+            foreach (var record in records)
+            {
+                sb.WriteRecord(record);
+            }
+
+            return sb.WriteToCsvFile();
         }
+
+        private static string WriteHeaders(IEnumerable<JProperty> headers)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var header in headers)
+            {
+                sb.Append($"{header.Name}, ");
+            }
+
+            var headerRow = sb
+                .ToString()
+                .RemoveTrailingComma();
+
+            return headerRow;
+        }
+
         private static byte[] WriteToCsvFile(this StringBuilder builder)
         {
             using var memoryStream = new MemoryStream();
@@ -42,16 +51,6 @@ namespace Service.Utilities
             writer.Flush();
             memoryStream.Position = 0;
             return memoryStream.ToArray();
-        }
-
-        private static StringBuilder WriteRecords(this StringBuilder builder, IEnumerable<JObject> records)
-        {
-            foreach (var record in records)
-            {
-                builder.WriteRecord(record);
-            }
-
-            return builder;
         }
 
         private static StringBuilder WriteRecord(this StringBuilder builder, JObject record)
@@ -68,6 +67,8 @@ namespace Service.Utilities
             return builder;
         }
 
+        // Helper methods
         private static string RemoveTrailingComma(this string row) => row.Remove(row.Length - 2);
+        private static IEnumerable<JProperty> GetProperties(this IEnumerable<JObject> objects) => objects.First().Properties();
     }
 }
