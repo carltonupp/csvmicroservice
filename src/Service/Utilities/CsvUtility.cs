@@ -1,13 +1,12 @@
-﻿using CsvMicroservice.Core.Utilities;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CsvMicroservice.Core.Classes
+namespace Service.Utilities
 {
-    public static class CsvCreator
+    internal static class CsvUtility
     {
         public static byte[] Create(IEnumerable<JObject> data, bool includeHeaders)
         {
@@ -36,8 +35,9 @@ namespace CsvMicroservice.Core.Classes
         }
         private static byte[] WriteToCsvFile(this StringBuilder builder)
         {
-            var memoryStream = new MemoryStream();
-            var writer = new StreamWriter(memoryStream);
+            using var memoryStream = new MemoryStream();
+            using var writer = new StreamWriter(memoryStream);
+
             writer.Write(builder.ToString());
             writer.Flush();
             memoryStream.Position = 0;
@@ -50,6 +50,7 @@ namespace CsvMicroservice.Core.Classes
             {
                 builder.WriteRecord(record);
             }
+
             return builder;
         }
 
@@ -62,11 +63,11 @@ namespace CsvMicroservice.Core.Classes
                 rowBuilder.Append($"{record.GetValue(property.Name)}, ");
             }
 
-            var recordRow = rowBuilder.ToString()
-                .RemoveTrailingComma();
+            var recordRow = rowBuilder.ToString().RemoveTrailingComma();
             builder.AppendLine(recordRow);
             return builder;
         }
-        
+
+        private static string RemoveTrailingComma(this string row) => row.Remove(row.Length - 2);
     }
 }
